@@ -19,6 +19,11 @@ var download = function (downloadUrl, installPath, callback) {
                 total: len
             });
 
+            if (302 == response.statusCode) {
+                download(response.headers.location, installPath, callback);
+                return;
+            }
+        
             if (200 != response.statusCode) {
                 throw new Error('Error getting DynamoDb local latest tar.gz location ' + response.headers.location + ': ' + response.statusCode);
             }
